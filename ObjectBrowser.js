@@ -80,7 +80,7 @@ Ext.define('Components.ObjectBrowser', {
 		else if (!o.hasOwnProperty('length') && (typeof o === 'object')) {
 			for (var key in o) {
 				if (o.hasOwnProperty(key)) {
-					if (typeof o[key] === 'object') {
+					if (typeof o[key] === 'object' && (o[key] !== null)) {
 						items.push({
 							key: key,
 							value: '',
@@ -88,11 +88,13 @@ Ext.define('Components.ObjectBrowser', {
 							children: this.parseObject(o[key])
 						});
 					} else {
+						var v = (o[key] === null) ? 'null' : o[key];
+						
 						items.push({
 							key: key,
-							value: o[key],
+							value: v,
 							leaf: true,
-							iconCls: 'tree-node-' + this.findType(o[key]),
+							iconCls: 'tree-node-' + this.findType(v)
 						});
 					}
 				}
