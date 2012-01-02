@@ -11,12 +11,12 @@ Ext.define('Components.ObjectBrowser', {
 			multiSelect: true,
 			columns: [{
 				xtype: 'treecolumn',
-				text: 'Key',
+				text: (this.keyTitle || 'Key'),
 				sortable: true,
 				dataIndex: 'key',
 				flex: 2
 			}, {
-				text: 'Value',
+				text: (this.valueTitle || 'Value'),
 				sortable: true,
 				dataIndex: 'value'
 			}]
