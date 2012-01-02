@@ -21,7 +21,10 @@ Ext.define('Components.ObjectBrowser', {
 				dataIndex: 'value'
 			}]
 		});
-    	
+        	
+        	if(typeof this.nullValue == 'undefined'){
+            		this.nullValue = 'null';
+        	}
 		this.store = this.createStore(this.data);
 		
 		return this.callParent(arguments);
@@ -60,7 +63,7 @@ Ext.define('Components.ObjectBrowser', {
 		if (o.hasOwnProperty('length') && (typeof o === 'object')) {
 			var idx = o.length;
 			while (idx--) {
-				if (typeof o[idx] === 'object') {
+				if (typeof o[idx] === 'object' && (o[idx] !== null)) {
 					items.push({
 						key: '[' + idx + ']',
 						value: '',
@@ -68,11 +71,12 @@ Ext.define('Components.ObjectBrowser', {
 						children: this.parseObject(o[idx])
 					});
 				} else {
+					var v = (o[idx] === null) ? this.nullValue : o[idx];
 					items.push({
 						key: '[' + idx + ']',
-						value: o[idx],
+						value: v,
 						leaf: true,
-						iconCls: 'tree-node-' + this.findType(o[idx])
+						iconCls: 'tree-node-' + this.findType(v)
 					});
 				}
 			}
@@ -88,8 +92,7 @@ Ext.define('Components.ObjectBrowser', {
 							children: this.parseObject(o[key])
 						});
 					} else {
-						var v = (o[key] === null) ? 'null' : o[key];
-						
+						var v = (o[key] === null) ? this.nullValue : o[key];
 						items.push({
 							key: key,
 							value: v,
